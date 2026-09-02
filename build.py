@@ -59,64 +59,65 @@ I = {
 
 # ── Spanish ─────────────────────────────────────────────────────────────────
 ES = {
+ "g.p3":"El enfoque adecuado varía de una persona a otra, y por eso entender tus opciones es un primer paso importante.",
  "skip":"Saltar al formulario",
  "nav.how":"Cómo funciona","nav.about":"Sobre el GLP-1","nav.expect":"Qué esperar",
  "nav.faq":"Preguntas","nav.contact":"Contacto",
  "cta.header":"Recibir orientación","cta.hero":"Recibir orientación gratuita",
  "cta.band":"Recibir orientación gratuita","cta.pop":"Recibir orientación gratuita",
- "hero.eyebrow":"Orientación y apoyo sobre el GLP-1",
- "hero.h1":"Explora las opciones de <em>GLP-1</em>.<br>Infórmate bien.",
- "hero.sub":"Te ayudamos a entender qué es el GLP-1, cómo actúa en el cuerpo y qué puede estar a tu alcance, para que decidas con información clara.",
- "p1.t":"Informar","p1.b":"Entiende qué es el GLP-1 y cómo actúa.",
- "p2.t":"Orientar","p2.b":"Respuestas claras a lo que preguntes.",
- "p3.t":"Acompañar","p3.b":"Te responde una persona, en español o inglés.",
- "hero.note":"Información clara. Sin presión. Explicado en lenguaje sencillo.",
+ "hero.eyebrow":"Orientación sobre GLP-1 y control de peso",
+ "hero.h1":"Explora las opciones de <em>GLP-1</em>.<br>Entiende tu camino de control de peso.",
+ "hero.sub":"Conoce cómo los enfoques basados en GLP-1 pueden apoyar el control de peso y descubre qué opciones podrían ser adecuadas para tus objetivos.",
+ "p1.t":"Informar","p1.b":"Entiende cómo actúan los GLP-1 y su papel en el control de peso.",
+ "p2.t":"Orientar","p2.b":"Recibe información clara sobre las opciones de GLP-1 disponibles.",
+ "p3.t":"Acompañar","p3.b":"Pregunta lo que quieras y recibe orientación directa en el camino.",
+ "hero.note":"Información clara. Sin presión. Orientación según tus objetivos.",
  "form.title":"Recibe orientación gratuita sobre el GLP-1",
  "form.kick":"Sin presión. Sin compromiso.",
- "form.sub":"Cuéntanos qué quieres entender y te enviaremos información clara.",
+ "form.sub":"Cuéntanos qué te gustaría entender y te ayudamos a explorar tus opciones.",
  "form.name":"Nombre completo","form.email":"Correo electrónico","form.phone":"Teléfono",
  "form.secure":"Tus datos están protegidos y nunca se comparten.",
  "form.err.name":"Escribe tu nombre.","form.err.email":"Escribe un correo válido.",
  "form.err.phone":"Escribe un teléfono válido.",
  "form.err.api":"No pudimos enviar tus datos. Tus respuestas siguen aquí — inténtalo de nuevo.",
  "form.sending":"Enviando…",
- "t1.t":"Información confiable","t1.b":"Revisada para que sea precisa y esté al día.",
- "t2.t":"Lenguaje sencillo","t2.b":"Sin jerga y sin exageraciones.",
- "t3.t":"Tu privacidad importa","t3.b":"Tus datos están protegidos y nunca se comparten.",
- "t4.t":"Personas reales","t4.b":"Te responde alguien de verdad, no un bot.",
- "g.eyebrow":"¿Qué es el GLP-1?","g.h2":"Entender el GLP-1",
- "g.p1":"El GLP-1 es una hormona que tu cuerpo produce. Se libera en el intestino después de comer y participa en la señal de saciedad, la digestión y la regulación de la glucosa.",
- "g.p2":"Se habla mucho de él y buena parte de lo que circula está simplificado en exceso. Esta página es nuestro intento de explicarlo con claridad.",
- "g1.t":"Señal de saciedad","g1.b":"Es una de las señales que comunican la saciedad entre el intestino y el cerebro.",
- "g2.t":"Ritmo de la digestión","g2.b":"Participa en regular la velocidad con la que se vacía el estómago.",
- "g3.t":"Respuesta de glucosa","g3.b":"Forma parte de la respuesta de insulina del cuerpo después de comer.",
- "g4.t":"Parte de un conjunto","g4.b":"El sueño, la alimentación, el movimiento y el estrés también influyen.",
- "b.eyebrow":"Pensado para ti","b.h2":"Un enfoque según tus preguntas",
- "b.p":"Cada persona llega con dudas distintas. Cuéntanos qué quieres entender y nos centramos en eso, en lugar de enviar el mismo resumen genérico a todo el mundo.",
- "b1.t":"Orientación personalizada","b1.b":"Respondemos a lo que preguntaste, no a lo que suponemos.",
- "b2.t":"Apoyo real","b2.b":"Una persona lee tu mensaje y te contesta.",
- "b3.t":"Siguientes pasos claros","b3.b":"Sabrás qué opciones existen y qué implica cada una.",
+ "t1.t":"Información confiable","t1.b":"Información clara y directa sobre los GLP-1 y el control de peso.",
+ "t2.t":"Lenguaje sencillo","t2.b":"Sin jerga innecesaria ni explicaciones confusas.",
+ "t3.t":"Tu privacidad importa","t3.b":"Tu información se maneja de forma segura y respetuosa.",
+ "t4.t":"Apoyo real","t4.b":"Recibe respuestas de una persona real cuando las necesites.",
+ "g.eyebrow":"¿Qué es el GLP-1?","g.h2":"Entender el GLP-1 y el control de peso",
+ "g.p1":"El GLP-1 es una hormona de origen natural que interviene en el apetito, la digestión y la regulación de la glucosa.",
+ "g.p2":"Los enfoques basados en GLP-1 se discuten ampliamente en el control de peso por su papel en la señal de saciedad y en cómo el cuerpo regula la ingesta de alimentos.",
+ "g1.t":"Señal de saciedad","g1.b":"El GLP-1 ayuda a comunicar la sensación de saciedad entre el sistema digestivo y el cerebro.",
+ "g2.t":"Ritmo de la digestión","g2.b":"El GLP-1 influye en la rapidez con que los alimentos avanzan por el sistema digestivo.",
+ "g3.t":"Respuesta de glucosa","g3.b":"El GLP-1 interviene en la respuesta del cuerpo a la glucosa después de las comidas.",
+ "g4.t":"Parte de un conjunto","g4.b":"La alimentación, la actividad, el sueño y la salud general influyen en un control de peso sostenible.",
+ "b.eyebrow":"Pensado para ti","b.h2":"Un enfoque más personalizado para tus objetivos de peso",
+ "b.p":"Los objetivos, el historial y las dudas de cada persona son distintos. Cuéntanos qué quieres entender y te ayudamos a explorar las opciones relacionadas con el GLP-1, sin darte una respuesta genérica.",
+ "b1.t":"Orientación personalizada","b1.b":"Recibe información según las preguntas y objetivos que realmente tienes.",
+ "b2.t":"Respuestas claras","b2.b":"Entiende qué significan las distintas opciones en términos prácticos.",
+ "b3.t":"Siguientes pasos","b3.b":"Sabrás qué preguntar y qué opciones vale la pena explorar más a fondo.",
  "h.eyebrow":"Cómo funciona","h.h2":"Simple. Privado. Sin presión.",
- "h1.t":"1. Comparte tus datos","h1.b":"Cuéntanos un poco sobre lo que quieres entender.",
- "h2.t":"2. Lo revisamos","h2.b":"Una persona lee tu solicitud, no un sistema automático.",
- "h3.t":"3. Recibes respuestas","h3.b":"Información clara sobre el GLP-1, en tu idioma.",
- "h4.t":"4. Pregunta lo que quieras","h4.b":"Sigue preguntando o déjalo ahí. Sin compromiso.",
- "h.conf.t":"100% confidencial","h.conf.b":"Tus datos están protegidos y nunca se comparten.",
+ "h1.t":"1. Comparte tus objetivos","h1.b":"Cuéntanos qué te gustaría entender sobre los GLP-1 y el control de peso.",
+ "h2.t":"2. Lo revisamos","h2.b":"Revisamos tus preguntas y la información que nos das.",
+ "h3.t":"3. Recibe orientación clara","h3.b":"Recibe información directa sobre las opciones de GLP-1 y los siguientes pasos.",
+ "h4.t":"4. Sigue la conversación","h4.b":"Haz preguntas de seguimiento siempre que necesites más claridad.",
+ "h.conf.t":"100% confidencial","h.conf.b":"Tu información se mantiene privada y segura.",
  "faq.eyebrow":"Preguntas frecuentes","faq.h2":"Lo que la gente pregunta",
- "faq1.q":"¿Qué es exactamente el GLP-1?",
- "faq1.a":"Es una hormona que tu cuerpo produce de forma natural. Se libera en el intestino después de comer y participa en la señal de saciedad, en el ritmo de la digestión y en la respuesta de insulina. No es un producto: es parte del funcionamiento normal del cuerpo.",
- "faq2.q":"¿Esto es asesoramiento médico?",
- "faq2.a":"No. Esta página es información general de carácter educativo. No diagnosticamos, tratamos ni recetamos. Cualquier asunto sobre tu salud corresponde a un profesional sanitario cualificado que conozca tu historial.",
- "faq3.q":"¿Qué me van a enviar?",
- "faq3.a":"Información en lenguaje claro sobre el GLP-1, escrita para alguien que empieza de cero, y una respuesta a lo que hayas preguntado. Si algo no lo sabemos, te lo diremos.",
- "faq4.q":"¿Cuánto cuesta?",
- "faq4.a":"Nada. Solicitar información es gratis y no te compromete a nada.",
- "faq5.q":"¿Me van a añadir a una lista de marketing?",
- "faq5.a":"Solo si lo aceptas, y puedes darte de baja en cualquier mensaje. Tus datos nunca se venden ni se ceden a terceros.",
- "band.h":"¿Quieres saber más sobre el GLP-1?",
- "band.p":"Da el primer paso. Recibe orientación gratuita de nuestro equipo.",
+ "faq1.q":"¿Qué es el GLP-1?",
+ "faq1.a":"El GLP-1 es una hormona que interviene en el apetito, la digestión y la regulación de la glucosa. Ciertos medicamentos con receta actúan a través de vías relacionadas con el GLP-1 y pueden formar parte de un plan de control de peso dirigido por un profesional clínico.",
+ "faq2.q":"¿El GLP-1 puede ayudar con la pérdida de peso?",
+ "faq2.a":"Los medicamentos basados en GLP-1 pueden apoyar la pérdida de peso en algunas personas cuando se recetan de forma adecuada y se combinan con un manejo más amplio del estilo de vida y la salud. Los resultados y la idoneidad varían según cada persona.",
+ "faq3.q":"¿Esto es asesoramiento médico?",
+ "faq3.a":"No. La información de esta página es educativa y no sustituye el consejo, el diagnóstico ni el tratamiento de un profesional sanitario cualificado.",
+ "faq4.q":"¿Qué pasa después de enviar el formulario?",
+ "faq4.a":"Te contactaremos con información basada en tus preguntas y te ayudaremos a entender los posibles siguientes pasos.",
+ "faq5.q":"¿Enviar el formulario me compromete a algo?",
+ "faq5.a":"No. No hay ninguna obligación de comprar ni de continuar con nada.",
+ "band.h":"¿Quieres saber más sobre el GLP-1 y la pérdida de peso?",
+ "band.p":"Da el primer paso para entender tus opciones.",
  "ftr.priv":"Privacidad","ftr.terms":"Términos","ftr.contact":"Contacto",
- "ftr.legal":"Este sitio tiene únicamente fines informativos y no ofrece asesoramiento médico, diagnóstico ni tratamiento.",
+ "ftr.legal":"Este sitio web ofrece información educativa general y no proporciona asesoramiento médico, diagnóstico ni tratamiento. La idoneidad para cualquier tratamiento con receta debe determinarla un profesional sanitario cualificado.",
  "pop.kick":"Gratis · Sin compromiso",
  "pop.title":"Recibe orientación gratuita sobre el GLP-1",
  "pop.sub":"Déjanos tus datos y te enviamos información clara. Unos 30 segundos.",
@@ -440,28 +441,28 @@ __GTM_BODY__
 <section class="hero">
   <div class="wrap hero__in">
     <div>
-      <span class="eyebrow-pill" data-i18n="hero.eyebrow">GLP-1 Guidance &amp; Support</span>
-      <h1 data-i18n="hero.h1">Explore <em>GLP-1</em> Options.<br>Get Guided. Feel Informed.</h1>
-      <p class="hero__sub" data-i18n="hero.sub">We help you understand what GLP-1 is, how it works in the body, and what may be available to you — so you can make an informed decision.</p>
+      <span class="eyebrow-pill" data-i18n="hero.eyebrow">GLP-1 Guidance &amp; Weight Loss Support</span>
+      <h1 data-i18n="hero.h1">Explore <em>GLP-1</em> Options.<br>Understand Your Weight Loss Path.</h1>
+      <p class="hero__sub" data-i18n="hero.sub">Learn how GLP-1-based approaches may support weight management and discover what options could be appropriate for your goals.</p>
 
       <div class="pills">
         <div class="pill">
           <div class="pill__h"><span class="pill__c">__I_CHECK__</span><span data-i18n="p1.t">Educate</span></div>
-          <p data-i18n="p1.b">Understand what GLP-1 is and how it works.</p>
+          <p data-i18n="p1.b">Understand how GLP-1s work and their role in weight management.</p>
         </div>
         <div class="pill">
           <div class="pill__h"><span class="pill__c">__I_CHECK__</span><span data-i18n="p2.t">Guide</span></div>
-          <p data-i18n="p2.b">Get clear answers to the questions you actually have.</p>
+          <p data-i18n="p2.b">Get clear information about available GLP-1 options.</p>
         </div>
         <div class="pill">
           <div class="pill__h"><span class="pill__c">__I_CHECK__</span><span data-i18n="p3.t">Support</span></div>
-          <p data-i18n="p3.b">A real person replies, in English or Spanish.</p>
+          <p data-i18n="p3.b">Ask questions and get straightforward guidance along the way.</p>
         </div>
       </div>
 
       <div class="hero__note">
         __I_PEOPLE__
-        <p data-i18n="hero.note">Clear information. No pressure. Explained in plain language.</p>
+        <p data-i18n="hero.note">Clear information. No pressure. Guidance built around your goals.</p>
       </div>
     </div>
 
@@ -469,7 +470,7 @@ __GTM_BODY__
       <h2 class="card__t" data-i18n="form.title">Get Free Guidance on GLP-1 Options</h2>
       <div class="card__rule"></div>
       <p class="card__k" data-i18n="form.kick">No pressure. No commitment.</p>
-      <p class="card__s" data-i18n="form.sub">Tell us what you would like to understand and we will send you clear information.</p>
+      <p class="card__s" data-i18n="form.sub">Tell us what you’d like to understand and we’ll help you explore your options.</p>
       <form class="frm" id="heroForm" novalidate>
         <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true"
                style="position:absolute;left:-9999px;width:1px;height:0;padding:0;border:0;opacity:0">
@@ -481,10 +482,10 @@ __FORM_HERO__
 
 <section class="strip" aria-label="What to expect from us">
   <div class="wrap"><div class="strip__in">
-    <div class="tr">__I_FLASK__<div><h3 data-i18n="t1.t">Information You Can Trust</h3><p data-i18n="t1.b">Reviewed for accuracy and kept current.</p></div></div>
-    <div class="tr">__I_DOC__<div><h3 data-i18n="t2.t">Plain Language</h3><p data-i18n="t2.b">No jargon, no hype, no overclaiming.</p></div></div>
-    <div class="tr">__I_LOCK__<div><h3 data-i18n="t3.t">Your Privacy Matters</h3><p data-i18n="t3.b">Your data is secure and never shared.</p></div></div>
-    <div class="tr">__I_PEOPLE__<div><h3 data-i18n="t4.t">Real People</h3><p data-i18n="t4.b">Someone real replies to you, not a bot.</p></div></div>
+    <div class="tr">__I_FLASK__<div><h3 data-i18n="t1.t">Information You Can Trust</h3><p data-i18n="t1.b">Clear, straightforward information about GLP-1s and weight management.</p></div></div>
+    <div class="tr">__I_DOC__<div><h3 data-i18n="t2.t">Plain Language</h3><p data-i18n="t2.b">No unnecessary jargon or confusing explanations.</p></div></div>
+    <div class="tr">__I_LOCK__<div><h3 data-i18n="t3.t">Your Privacy Matters</h3><p data-i18n="t3.b">Your information is handled securely and respectfully.</p></div></div>
+    <div class="tr">__I_PEOPLE__<div><h3 data-i18n="t4.t">Real Support</h3><p data-i18n="t4.b">Get answers from a real person when you need them.</p></div></div>
   </div></div>
 </section>
 
@@ -492,15 +493,16 @@ __FORM_HERO__
   <div class="wrap glp">
     <div class="glp__l">
       <p class="kick" data-i18n="g.eyebrow">What is GLP-1?</p>
-      <h2 class="h2" data-i18n="g.h2">Understanding GLP-1</h2>
-      <p data-i18n="g.p1">GLP-1 is a hormone your body produces. It is released in the gut after eating and takes part in appetite signalling, digestion and blood sugar regulation.</p>
-      <p data-i18n="g.p2">It is discussed widely at the moment, and much of what circulates online is oversimplified. This page is our attempt at a clear explanation.</p>
+      <h2 class="h2" data-i18n="g.h2">Understanding GLP-1 and Weight Management</h2>
+      <p data-i18n="g.p1">GLP-1 is a naturally occurring hormone involved in appetite, digestion, and blood sugar regulation.</p>
+      <p data-i18n="g.p2">GLP-1-based approaches have become widely discussed in weight management because of their role in appetite signaling and how the body regulates food intake.</p>
+      <p data-i18n="g.p3">The right approach varies from person to person, which is why understanding your options is an important first step.</p>
     </div>
     <div class="glp__r">
-      <div class="gi">__I_CUTLERY__<h3 data-i18n="g1.t">A role in appetite signalling</h3><p data-i18n="g1.b">One of the signals communicating fullness between the gut and the brain.</p></div>
-      <div class="gi">__I_FLAME__<h3 data-i18n="g2.t">A role in digestion</h3><p data-i18n="g2.b">Takes part in regulating how quickly the stomach empties.</p></div>
-      <div class="gi">__I_DROP__<h3 data-i18n="g3.t">A role in blood sugar</h3><p data-i18n="g3.b">Involved in the body's insulin response after eating.</p></div>
-      <div class="gi">__I_SCALE__<h3 data-i18n="g4.t">Part of a bigger picture</h3><p data-i18n="g4.b">Sleep, diet, movement and stress all shape metabolic health too.</p></div>
+      <div class="gi">__I_CUTLERY__<h3 data-i18n="g1.t">A role in appetite signaling</h3><p data-i18n="g1.b">GLP-1 helps communicate feelings of fullness between the digestive system and brain.</p></div>
+      <div class="gi">__I_FLAME__<h3 data-i18n="g2.t">A role in digestion</h3><p data-i18n="g2.b">GLP-1 influences how quickly food moves through the digestive system.</p></div>
+      <div class="gi">__I_DROP__<h3 data-i18n="g3.t">A role in blood sugar</h3><p data-i18n="g3.b">GLP-1 is involved in the body’s response to blood sugar after meals.</p></div>
+      <div class="gi">__I_SCALE__<h3 data-i18n="g4.t">Part of a bigger picture</h3><p data-i18n="g4.b">Nutrition, activity, sleep, and overall health all play a role in sustainable weight management.</p></div>
     </div>
   </div>
 </section>
@@ -523,13 +525,13 @@ __FORM_HERO__
     </div>
     <div class="built__b">
       <p class="kick" data-i18n="b.eyebrow">Built around you</p>
-      <h2 class="h2" data-i18n="b.h2">A Personalized Approach to Your Questions</h2>
-      <p data-i18n="b.p">Everyone arrives with different questions. Tell us what you are trying to understand and we will focus on that, rather than sending everyone the same generic overview.</p>
+      <h2 class="h2" data-i18n="b.h2">A More Personalized Approach to Your Weight Loss Goals</h2>
+      <p data-i18n="b.p">Everyone’s goals, history, and questions are different. Tell us what you’re trying to understand, and we’ll help you explore GLP-1-related options without giving you a one-size-fits-all answer.</p>
     </div>
     <div class="ticks">
-      <div class="tick"><span class="tick__c">__I_CHECK__</span><div><h3 data-i18n="b1.t">Personalized Guidance</h3><p data-i18n="b1.b">We answer what you asked, not what we assumed.</p></div></div>
-      <div class="tick"><span class="tick__c">__I_CHECK__</span><div><h3 data-i18n="b2.t">Real Support</h3><p data-i18n="b2.b">A person reads your message and replies to it.</p></div></div>
-      <div class="tick"><span class="tick__c">__I_CHECK__</span><div><h3 data-i18n="b3.t">Clear Next Steps</h3><p data-i18n="b3.b">You will know what exists and what each option involves.</p></div></div>
+      <div class="tick"><span class="tick__c">__I_CHECK__</span><div><h3 data-i18n="b1.t">Personalized Guidance</h3><p data-i18n="b1.b">Get information based on the questions and goals you actually have.</p></div></div>
+      <div class="tick"><span class="tick__c">__I_CHECK__</span><div><h3 data-i18n="b2.t">Clear Answers</h3><p data-i18n="b2.b">Understand what the different options mean in practical terms.</p></div></div>
+      <div class="tick"><span class="tick__c">__I_CHECK__</span><div><h3 data-i18n="b3.t">Next Steps</h3><p data-i18n="b3.b">Know what questions to ask and what options may be worth exploring further.</p></div></div>
     </div>
   </div>
 </section>
@@ -542,19 +544,19 @@ __FORM_HERO__
         <h2 class="h2" data-i18n="h.h2">Simple. Private. Supportive.</h2>
       </div>
       <div class="steps">
-        <div class="step"><div class="step__c">__I_DOC__</div><h3 data-i18n="h1.t">1. Share Your Info</h3><p data-i18n="h1.b">Tell us a little about what you want to understand.</p></div>
+        <div class="step"><div class="step__c">__I_DOC__</div><h3 data-i18n="h1.t">1. Share Your Goals</h3><p data-i18n="h1.b">Tell us what you’d like to understand about GLP-1s and weight management.</p></div>
         <span class="steps__a" aria-hidden="true">__I_ARROW__</span>
-        <div class="step"><div class="step__c">__I_USER__</div><h3 data-i18n="h2.t">2. We Review It</h3><p data-i18n="h2.b">A person reads your request, not an automated system.</p></div>
+        <div class="step"><div class="step__c">__I_USER__</div><h3 data-i18n="h2.t">2. We Review It</h3><p data-i18n="h2.b">We look at your questions and the information you provide.</p></div>
         <span class="steps__a" aria-hidden="true">__I_ARROW__</span>
-        <div class="step"><div class="step__c">__I_CHAT__</div><h3 data-i18n="h3.t">3. Get Clear Answers</h3><p data-i18n="h3.b">Straightforward information about GLP-1, in your language.</p></div>
+        <div class="step"><div class="step__c">__I_CHAT__</div><h3 data-i18n="h3.t">3. Get Clear Guidance</h3><p data-i18n="h3.b">Receive straightforward information about GLP-1 options and next steps.</p></div>
         <span class="steps__a" aria-hidden="true">__I_ARROW__</span>
-        <div class="step"><div class="step__c">__I_HEART__</div><h3 data-i18n="h4.t">4. Ask Anything Else</h3><p data-i18n="h4.b">Keep asking or stop there. There is no obligation.</p></div>
+        <div class="step"><div class="step__c">__I_HEART__</div><h3 data-i18n="h4.t">4. Keep the Conversation Going</h3><p data-i18n="h4.b">Ask follow-up questions whenever you need more clarity.</p></div>
       </div>
     </div>
     <div class="conf">
       __I_SHIELD__
       <h3 data-i18n="h.conf.t">100% Confidential</h3>
-      <p data-i18n="h.conf.b">Your information is secure and will never be shared.</p>
+      <p data-i18n="h.conf.b">Your information is kept private and secure.</p>
     </div>
   </div>
 </section>
@@ -572,8 +574,8 @@ __FORM_HERO__
 <section class="band">
   <div class="wrap band__in">
     <div>
-      <p class="band__t" data-i18n="band.h">Ready to Learn More About GLP-1 Options?</p>
-      <p class="band__s" data-i18n="band.p">Take the first step. Get free guidance from our team today.</p>
+      <p class="band__t" data-i18n="band.h">Ready to Learn More About GLP-1 and Weight Loss?</p>
+      <p class="band__s" data-i18n="band.p">Take the first step toward understanding your options.</p>
     </div>
     <a class="btn btn--primary btn--lg" href="#lead" data-cta="band" data-i18n="cta.band">Get Free Guidance</a>
   </div>
@@ -590,7 +592,7 @@ __FORM_HERO__
         <a href="#" data-i18n="ftr.terms">Terms of Service</a>
         <a href="mailto:__EMAIL__" data-i18n="ftr.contact">Contact Us</a>
       </nav>
-      <p class="ftr__legal" data-i18n="ftr.legal">This website is for informational purposes only and does not provide medical advice, diagnosis or treatment.</p>
+      <p class="ftr__legal" data-i18n="ftr.legal">This website provides general educational information only and does not provide medical advice, diagnosis, or treatment. Eligibility for any prescription treatment must be determined by a licensed healthcare professional.</p>
     </div>
     <p class="ftr__copy">&copy; 2026 Peptides Costa Rica · __EMAIL__ · US __PHONE_US__ · CR __PHONE_CR__</p>
   </div>
@@ -830,16 +832,16 @@ track("page_view_lp", { variant: "glp1_design_v2", language: lang });
 '''
 
 FAQS = [
- ("faq1", "What actually is GLP-1?",
-  "Glucagon-like peptide-1 is a hormone your body produces naturally. It is released in the gut after you eat and takes part in appetite signalling, the pace of digestion and the body's insulin response. It is not a product — it is a normal part of how the body works."),
- ("faq2", "Is this medical advice?",
-  "No. This page is general educational information. We do not diagnose, treat or prescribe. Anything concerning your own health should go to a qualified healthcare professional who knows your history."),
- ("faq3", "What will you send me?",
-  "Plain-language information about GLP-1 written for someone starting from scratch, plus an answer to whatever you asked. If we do not know something, we will say so rather than fill the gap."),
- ("faq4", "What does it cost?",
-  "Nothing. Requesting information is free and puts you under no obligation."),
- ("faq5", "Will I be added to a marketing list?",
-  "Only if you agree to it, and you can unsubscribe from any message. Your details are never sold and never passed to third parties."),
+ ("faq1", "What is GLP-1?",
+  "GLP-1 is a hormone involved in appetite, digestion, and blood sugar regulation. Certain prescription medications work through GLP-1-related pathways and may be used as part of a clinician-directed weight management plan."),
+ ("faq2", "Can GLP-1 help with weight loss?",
+  "GLP-1-based medications may support weight loss for some people when appropriately prescribed and combined with broader lifestyle and health management. Results and suitability vary by individual."),
+ ("faq3", "Is this medical advice?",
+  "No. The information on this page is educational and is not a substitute for advice, diagnosis, or treatment from a licensed healthcare professional."),
+ ("faq4", "What happens after I submit the form?",
+  "We\u2019ll follow up with information based on your questions and help you understand possible next steps."),
+ ("faq5", "Does submitting the form commit me to anything?",
+  "No. There is no obligation to purchase or proceed with anything."),
 ]
 
 faq_html = '\n'.join(

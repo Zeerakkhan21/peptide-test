@@ -51,15 +51,26 @@ cannot quietly reintroduce one:
 - **No purchase language.** No cart, checkout, buy, prices, discounts, stock or
   vial counts. There is not a single `$` on the page.
 - **No provider claim.** The reference design is built on "we connect you with
-  licensed providers." That claim is **not** made here — there is no mention of
-  licensed providers, clinicians, prescribers or consultations, and the FAQ
-  states plainly that this is not medical advice and that we do not diagnose,
-  treat or prescribe.
-- **No promised outcome and no dosing guidance.**
+  licensed providers." That claim is **not** made here. The page never says we
+  supply, employ or match anyone with a clinician. The test checks the *shape*
+  of that claim rather than the words, so the disclaimers can still direct
+  people to an independent licensed healthcare professional — which they do,
+  in the FAQ and the footer.
+- **No promised outcome and no dosing guidance.** Where the copy discusses
+  weight management it is hedged throughout: "may support", "for some people",
+  "results and suitability vary by individual".
 
-GLP-1 is described throughout as **the hormone the body produces** — appetite
-signalling, gastric emptying, the insulin response. That is physiology, and it
-is factual. It is not a claim about any product.
+GLP-1 itself is described as **a naturally occurring hormone** — appetite,
+digestion, blood sugar. That is physiology, and it is factual.
+
+Two things the copy does say, deliberately, and worth knowing before you run
+traffic: that certain **prescription medications** work through GLP-1-related
+pathways and may form part of a clinician-directed plan, and that such
+medications **may support weight loss for some people when appropriately
+prescribed**. Both are accurate and hedged. Both also set an expectation that a
+lead may be looking for a route to a prescription, which is not something this
+business supplies — worth deciding how the follow-up handles that before the
+first leads arrive.
 
 ## The popup
 
