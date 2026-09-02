@@ -20,6 +20,11 @@ GLP-1 is described as the hormone the body produces. Physiology, not a product.
 """
 from brand import ICONS, LOGO, LOGO_LIGHT, TOKENS, GTM_HEAD, GTM_BODY
 
+# Lifestyle photograph for the "Built around you" panel, inlined so the page
+# stays self-contained. Supplied by the client — see the licensing note in the
+# README before this goes live.
+PHOTO = open('photo.b64', encoding='utf-8').read().strip()
+
 CFG = {
     "endpoint": "/api/lead",
     "source": "glp1_lp",
@@ -59,6 +64,46 @@ I = {
 
 # ── Spanish ─────────────────────────────────────────────────────────────────
 ES = {
+ "wiz.back":"Atrás",
+ "q.goal":"¿Qué te gustaría entender mejor?",
+ "q.goal.h":"Esto nos dice en qué centrar la información.",
+ "q.location":"¿Dónde te encuentras?",
+ "q.location.h":"Para orientarte hacia lo que aplica donde estás.",
+ "q.stage":"¿En qué punto estás?",
+ "q.stage.h":"No hay respuesta incorrecta — solo marca el nivel.",
+ "q.language":"¿En qué idioma respondemos?",
+ "q.language.h":"Todos los mensajes llegarán en el idioma que elijas.",
+ "q.contact":"¿Dónde te lo enviamos?",
+ "q.contact.h":"Último paso — y alguien lo retoma desde aquí.",
+ "o.glp-1-and-weight-manageme":"GLP-1 y control de peso",
+ "o.glp-1-and-appetite":"GLP-1 y apetito",
+ "o.glp-1-and-metabolic-healt":"GLP-1 y salud metabólica",
+ "o.what-options-exist-genera":"Qué opciones existen en general",
+ "o.something-else":"Otra cosa",
+ "o.something-else.s":"Cuéntanos y lo cubrimos",
+ "o.united-states":"Estados Unidos",
+ "o.costa-rica":"Costa Rica",
+ "o.somewhere-else":"En otro lugar",
+ "o.somewhere-else.s":"Dinos dónde y lo adaptamos",
+ "o.just-starting-to-look-int":"Estoy empezando a informarme",
+ "o.read-a-lot--still-unsure":"He leído mucho y sigo con dudas",
+ "o.read-a-lot--still-unsure.s":"Te lo aclaramos",
+ "o.fairly-informed-already":"Ya estoy bastante informado",
+ "o.fairly-informed-already.s":"Nos saltamos lo básico",
+ "o.not-sure-yet":"Aún no lo sé",
+ "o.english":"English",
+ "o.espa-ol":"Español",
+ "f.fname":"Nombre",
+ "f.fname.e":"Escribe tu nombre.",
+ "f.lname":"Apellido (opcional)",
+ "f.email":"Correo electrónico",
+ "f.email.e":"Escribe un correo válido.",
+ "f.phone":"Teléfono",
+ "f.phone.e":"Escribe un teléfono válido.",
+ "f.alt":"Número de mensajería (opcional)",
+ "f.consent":"Acepto que me contacten sobre esta solicitud y recibir información educativa ocasional por correo o teléfono. Puedo darme de baja cuando quiera.",
+ "f.consent.e":"Marca la casilla para que podamos responderte.",
+ "f.apierr":"No pudimos enviar tus datos. Tus respuestas siguen aquí — inténtalo de nuevo.",
  "g.p3":"El enfoque adecuado varía de una persona a otra, y por eso entender tus opciones es un primer paso importante.",
  "skip":"Saltar al formulario",
  "nav.how":"Cómo funciona","nav.about":"Sobre el GLP-1","nav.expect":"Qué esperar",
@@ -123,34 +168,123 @@ ES = {
  "pop.sub":"Déjanos tus datos y te enviamos información clara. Unos 30 segundos.",
 }
 
-FIELDS = '''
-      <div class="fld">
-        <span class="fld__i">%s</span>
-        <input id="%%sname" name="name" type="text" autocomplete="name" placeholder="Full Name"
-               data-i18n-ph="form.name" required aria-describedby="%%sname-e">
-        <p class="fld__e" id="%%sname-e" hidden data-i18n="form.err.name">Please enter your name.</p>
-      </div>
-      <div class="fld">
-        <span class="fld__i">%s</span>
-        <input id="%%semail" name="email" type="email" autocomplete="email" placeholder="Email Address"
-               data-i18n-ph="form.email" required aria-describedby="%%semail-e">
-        <p class="fld__e" id="%%semail-e" hidden data-i18n="form.err.email">Please enter a valid email address.</p>
-      </div>
-      <div class="fld">
-        <span class="fld__i">%s</span>
-        <input id="%%sphone" name="phone" type="tel" autocomplete="tel" placeholder="Phone Number"
-               data-i18n-ph="form.phone" required aria-describedby="%%sphone-e">
-        <p class="fld__e" id="%%sphone-e" hidden data-i18n="form.err.phone">Please enter a valid phone number.</p>
-      </div>
-''' % (I["user"], I["mail"], I["phone"])
+QUESTIONS = [
+ ("goal", "What would you like to understand better?",
+  "This tells us what to focus the information on.", [
+   ("GLP-1 and weight management", ""),
+   ("GLP-1 and appetite", ""),
+   ("GLP-1 and metabolic health", ""),
+   ("What options exist generally", ""),
+   ("Something else", "Tell us and we will cover it"),
+ ]),
+ ("location", "Where are you based?",
+  "So we can point you to what is relevant where you are.", [
+   ("United States", ""),
+   ("Costa Rica", ""),
+   ("Somewhere else", "Tell us where and we will adapt"),
+ ]),
+ ("stage", "Where are you in the process?",
+  "There is no wrong answer — it just sets the level we pitch it at.", [
+   ("Just starting to look into it", ""),
+   ("Read a lot, still unsure", "We will cut through it"),
+   ("Fairly informed already", "We will skip the basics"),
+   ("Not sure yet", ""),
+ ]),
+ ("language", "Which language should we reply in?",
+  "Every message will come in the language you pick.", [
+   ("English", ""),
+   ("Español", ""),
+ ]),
+]
 
 
-def form(prefix, btn_key, btn_label):
-    return FIELDS.replace('%s', prefix) + '''
-      <p class="frm__err" id="%serr" hidden data-i18n="form.err.api">We could not send your details just then. Your answers are still here — please press the button again.</p>
-      <button type="submit" class="btn btn--primary btn--block btn--lg" id="%sbtn" data-i18n="%s">%s</button>
-      <p class="frm__secure">%s<span data-i18n="form.secure">Your information is secure and will never be shared.</span></p>
-''' % (prefix, prefix, btn_key, btn_label, I["lock"])
+def _key(val):
+    return "o." + "".join(c if c.isalnum() else "-" for c in val.lower())[:26].strip("-")
+
+
+def options(key, opts):
+    out = []
+    for val, sub in opts:
+        k = _key(val)
+        inner = val
+        if sub:
+            inner += '<span class="opt__s" data-i18n="%s.s">%s</span>' % (k, sub)
+        out.append('<button type="button" class="opt" data-q="%s" data-val="%s">'
+                   '<span class="opt__d"></span>'
+                   '<span class="opt__t" data-i18n="%s">%s</span></button>'
+                   % (key, val, k, inner))
+    return "\n            ".join(out)
+
+
+def wizard(p):
+    """The five-step form. p is an id prefix, so it can appear twice on one page."""
+    panes = []
+    for n, (key, q, hint, opts) in enumerate(QUESTIONS, start=1):
+        panes.append(
+            '\n        <div class="pane" data-step="%d"%s>'
+            '\n          <p class="pane__q" data-i18n="q.%s">%s</p>'
+            '\n          <p class="pane__h" data-i18n="q.%s.h">%s</p>'
+            '\n          <div class="opts">\n            %s\n          </div>'
+            '\n        </div>'
+            % (n, "" if n == 1 else " hidden", key, q, key, hint, options(key, opts)))
+
+    contact = (
+        '\n        <div class="pane" data-step="5" hidden>'
+        '\n          <p class="pane__q" data-i18n="q.contact">Where should we send it?</p>'
+        '\n          <p class="pane__h" data-i18n="q.contact.h">Last step — then someone picks it up from here.</p>'
+        '\n          <div class="frm">'
+        '\n            <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true"'
+        '\n                   style="position:absolute;left:-9999px;width:1px;height:0;padding:0;border:0;opacity:0">'
+        '\n            <div class="row2">'
+        '\n              <div class="fld"><span class="fld__i">{user}</span>'
+        '\n                <input id="{p}fname" type="text" autocomplete="given-name" placeholder="First name"'
+        '\n                       data-i18n-ph="f.fname" aria-describedby="{p}fname-e">'
+        '\n                <p class="fld__e" id="{p}fname-e" hidden data-i18n="f.fname.e">Please enter your first name.</p>'
+        '\n              </div>'
+        '\n              <div class="fld">'
+        '\n                <input id="{p}lname" type="text" autocomplete="family-name"'
+        '\n                       placeholder="Last name (optional)" data-i18n-ph="f.lname">'
+        '\n              </div>'
+        '\n            </div>'
+        '\n            <div class="fld"><span class="fld__i">{mail}</span>'
+        '\n              <input id="{p}email" type="email" autocomplete="email" placeholder="Email Address"'
+        '\n                     data-i18n-ph="f.email" aria-describedby="{p}email-e">'
+        '\n              <p class="fld__e" id="{p}email-e" hidden data-i18n="f.email.e">Please enter a valid email address.</p>'
+        '\n            </div>'
+        '\n            <div class="fld"><span class="fld__i">{phone}</span>'
+        '\n              <input id="{p}phone" type="tel" autocomplete="tel" placeholder="Phone Number"'
+        '\n                     data-i18n-ph="f.phone" aria-describedby="{p}phone-e">'
+        '\n              <p class="fld__e" id="{p}phone-e" hidden data-i18n="f.phone.e">Please enter a valid phone number.</p>'
+        '\n            </div>'
+        '\n            <div class="fld"><span class="fld__i">{chat}</span>'
+        '\n              <input id="{p}alt" type="tel" autocomplete="tel"'
+        '\n                     placeholder="Messaging number (optional)" data-i18n-ph="f.alt">'
+        '\n            </div>'
+        '\n            <label class="consent">'
+        '\n              <input type="checkbox" id="{p}consent">'
+        '\n              <span data-i18n="f.consent">I agree to be contacted about this request and to receive'
+        ' occasional educational updates by email or phone. Unsubscribe any time.</span>'
+        '\n            </label>'
+        '\n            <p class="fld__e" id="{p}consent-e" hidden data-i18n="f.consent.e">Please tick the box so we can reply to you.</p>'
+        '\n            <p class="frm__err" id="{p}err" hidden data-i18n="f.apierr">We could not send your details just then.'
+        ' Your answers are still here — please press the button again.</p>'
+        '\n            <button type="button" class="btn btn--primary btn--block btn--lg" id="{p}btn"'
+        '\n                    data-i18n="cta.hero">Get Free Guidance</button>'
+        '\n            <p class="frm__secure">{lock}<span data-i18n="form.secure">Your information is secure and will never be shared.</span></p>'
+        '\n          </div>'
+        '\n        </div>'
+    ).format(p=p, user=I["user"], mail=I["mail"], phone=I["phone"], chat=I["chat"], lock=I["lock"])
+
+    return (
+        '<div class="wiz" id="%swiz" data-prefix="%s">'
+        '\n        <div class="wiz__top">'
+        '\n          <button type="button" class="wiz__back" id="%sback" hidden>%s<span data-i18n="wiz.back">Back</span></button>'
+        '\n          <p class="wiz__step" id="%sstep">Step 1 of 5</p>'
+        '\n        </div>'
+        '\n        <div class="wiz__bar"><i id="%sbar"></i></div>'
+        '\n        <div class="wiz__chips" id="%schips"></div>%s%s'
+        '\n      </div>'
+        % (p, p, p, I["chevron"], p, p, p, "".join(panes), contact))
 
 
 PAGE = r'''<!DOCTYPE html>
@@ -257,7 +391,6 @@ h1 em{font-style:normal;color:var(--b500)}
 .card__rule{width:54px;height:3px;border-radius:2px;background:var(--b500);margin:15px auto 0}
 .card__k{margin-top:15px;text-align:center;font-weight:600;font-size:.94rem}
 .card__s{margin-top:7px;text-align:center;color:var(--ink2);font-size:.9rem;line-height:1.5}
-.frm{margin-top:20px;display:flex;flex-direction:column;gap:12px}
 .fld{position:relative}
 .fld__i{position:absolute;left:14px;top:15px;color:var(--ink3);pointer-events:none}
 .fld__i svg{width:19px;height:19px;display:block}
@@ -272,6 +405,52 @@ h1 em{font-style:normal;color:var(--b500)}
 .frm__secure{display:flex;gap:7px;align-items:center;justify-content:center;
   margin-top:12px;font-size:.8rem;color:var(--ink3)}
 .frm__secure svg{width:14px;height:14px;flex:0 0 auto}
+/* ── wizard ──────────────────────────────────────────── */
+.wiz{margin-top:20px}
+.wiz__top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:30px}
+.wiz__back{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:6px 4px;
+  min-height:30px;font:inherit;font-size:.82rem;font-weight:500;color:var(--ink3);cursor:pointer}
+.wiz__back svg{width:14px;height:14px;transform:rotate(180deg)}
+.wiz__back:hover{color:var(--b700)}
+.wiz__back:focus-visible{outline:2px solid var(--b500);outline-offset:2px;border-radius:6px}
+.wiz__back[hidden]{display:none}
+.wiz__step{margin-left:auto;font-size:.72rem;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink3)}
+.wiz__bar{height:4px;border-radius:2px;background:var(--b100);margin-top:8px;overflow:hidden}
+.wiz__bar i{display:block;height:100%;width:20%;border-radius:2px;
+  background:linear-gradient(90deg,var(--b600),var(--b400));transition:width .3s var(--ease)}
+@media (prefers-reduced-motion:reduce){.wiz__bar i{transition:none}}
+
+.wiz__chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.wiz__chips:empty{display:none}
+.chip{display:inline-flex;align-items:center;gap:5px;background:var(--b50);border:1px solid var(--b100);
+  color:var(--b700);font-size:.73rem;font-weight:500;padding:4px 9px;border-radius:999px;
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.pane{margin-top:18px}
+.pane[hidden]{display:none}
+.pane__q{font-size:1.06rem;font-weight:600;line-height:1.35;text-wrap:balance}
+.pane__h{margin-top:5px;font-size:.85rem;color:var(--ink3);line-height:1.5}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.opt{display:flex;align-items:center;gap:11px;width:100%;text-align:left;min-height:52px;
+  padding:12px 15px;border:1px solid var(--line);border-radius:11px;background:var(--surface);
+  font:inherit;font-size:.94rem;color:var(--ink);cursor:pointer;
+  transition:border-color .14s,background .14s}
+.opt:hover{border-color:var(--b400);background:var(--b50)}
+.opt:focus-visible{outline:3px solid var(--b500);outline-offset:2px}
+.opt.sel{border-color:var(--b500);background:var(--b50)}
+.opt__d{flex:0 0 auto;width:19px;height:19px;border-radius:50%;border:2px solid var(--b200);
+  background:var(--surface);transition:border-color .14s,box-shadow .14s}
+.opt.sel .opt__d{border-color:var(--b500);box-shadow:inset 0 0 0 4px var(--b500)}
+.opt__t{display:block;line-height:1.35}
+.opt__s{display:block;margin-top:2px;font-size:.79rem;color:var(--ink3);font-weight:400}
+@media (prefers-reduced-motion:reduce){.opt,.opt__d{transition:none}}
+
+.row2{display:grid;gap:12px}
+@media (min-width:420px){.row2{grid-template-columns:1fr 1fr}}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:.81rem;color:var(--ink2);
+  line-height:1.48;cursor:pointer;padding:2px 0}
+.consent input{flex:0 0 auto;width:18px;height:18px;margin-top:2px;accent-color:var(--b600);cursor:pointer}
 
 /* ── trust strip ─────────────────────────────────────── */
 .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface)}
@@ -314,13 +493,8 @@ h1 em{font-style:normal;color:var(--b500)}
 /* built around you */
 .built{display:grid;gap:clamp(26px,3.6vw,44px);align-items:center}
 @media (min-width:900px){.built{grid-template-columns:.78fr 1.02fr .9fr}}
-.built__art{border-radius:18px;overflow:hidden;position:relative;
-  aspect-ratio:5/4;background:linear-gradient(155deg,#0A3468,#06213F 58%,#03101F);
-  display:grid;place-items:center}
-.built__art::after{content:"";position:absolute;inset:0;
-  background-image:radial-gradient(rgba(93,190,254,.20) 1.3px,transparent 1.3px);
-  background-size:26px 26px;opacity:.55}
-.built__art svg{width:56%;height:auto;position:relative;z-index:1}
+.built__art{border-radius:18px;overflow:hidden;aspect-ratio:5/4;background:var(--b50)}
+.built__art img{width:100%;height:100%;object-fit:cover;display:block}
 .built__b .h2{margin:10px 0 14px}
 .built__b p{color:var(--ink2);font-size:.95rem;max-width:46ch}
 .ticks{display:flex;flex-direction:column;gap:20px}
@@ -471,11 +645,7 @@ __GTM_BODY__
       <div class="card__rule"></div>
       <p class="card__k" data-i18n="form.kick">No pressure. No commitment.</p>
       <p class="card__s" data-i18n="form.sub">Tell us what you’d like to understand and we’ll help you explore your options.</p>
-      <form class="frm" id="heroForm" novalidate>
-        <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true"
-               style="position:absolute;left:-9999px;width:1px;height:0;padding:0;border:0;opacity:0">
-__FORM_HERO__
-      </form>
+      __FORM_HERO__
     </div>
   </div>
 </section>
@@ -509,19 +679,8 @@ __FORM_HERO__
 
 <section class="sec sec--tint" id="expect">
   <div class="wrap built">
-    <div class="built__art" role="img" aria-label="Abstract molecular illustration">
-      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g stroke="#5FE3EF" stroke-opacity=".55" stroke-width="1.6">
-          <path d="M100 42 154 74v64l-54 32-54-32V74z"/>
-          <path d="M100 42v54M154 74l-54 22M46 74l54 22M100 96v74"/>
-        </g>
-        <circle cx="100" cy="96" r="13" fill="#5FE3EF"/>
-        <g fill="#3D96EE">
-          <circle cx="100" cy="42" r="8"/><circle cx="154" cy="74" r="8"/>
-          <circle cx="154" cy="138" r="8"/><circle cx="100" cy="170" r="8"/>
-          <circle cx="46" cy="138" r="8"/><circle cx="46" cy="74" r="8"/>
-        </g>
-      </svg>
+    <div class="built__art">
+      <img src="__PHOTO__" alt="" width="440" height="352" loading="lazy" decoding="async">
     </div>
     <div class="built__b">
       <p class="kick" data-i18n="b.eyebrow">Built around you</p>
@@ -606,11 +765,7 @@ __FORM_HERO__
       <h2 class="card__t" id="popT" style="margin-top:10px" data-i18n="pop.title">Get Free Guidance on GLP-1 Options</h2>
       <div class="card__rule"></div>
       <p class="card__s" data-i18n="pop.sub">Leave your details and we will send you clear information. About 30 seconds.</p>
-      <form class="frm" id="popForm" novalidate>
-        <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true"
-               style="position:absolute;left:-9999px;width:1px;height:0;padding:0;border:0;opacity:0">
-__FORM_POP__
-      </form>
+      __FORM_POP__
     </div>
   </div>
 </div>
@@ -679,41 +834,113 @@ function mark(input, bad){
   if (e) e.hidden = !bad;
 }
 
-/* ---------- submit ---------- */
+/* ---------- the form ----------
+   One wizard, instantiated twice: the hero card and the popup. Each keeps its
+   own answers, so a visitor who starts in one and finishes in the other is not
+   surprised by half-filled state. Whichever completes first wins; `done` then
+   stops the other and stops the popup reopening. */
 var sending = false, done = false;
+// Set as soon as someone engages with the hero form. The popup checks it, so
+// nobody gets a dialog dropped on top of a question they are halfway through.
+var engaged = false;
 
-function wireForm(formId, prefix, where){
-  var form = document.getElementById(formId);
-  if (!form) return;
-  var btn = document.getElementById(prefix + "btn");
-  var box = document.getElementById(prefix + "err");
-  var label = btn.innerHTML;
+function wizard(prefix, where){
+  var root = document.getElementById(prefix + "wiz");
+  if (!root) return;
 
-  $$("input", form).forEach(function(i){
+  var panes  = $$(".pane", root);
+  var bar    = document.getElementById(prefix + "bar");
+  var stepEl = document.getElementById(prefix + "step");
+  var backEl = document.getElementById(prefix + "back");
+  var chips  = document.getElementById(prefix + "chips");
+  var btn    = document.getElementById(prefix + "btn");
+  var box    = document.getElementById(prefix + "err");
+  var label  = btn.innerHTML;
+  var total  = panes.length;
+  var step   = 1;
+  var answers = {};
+  var started = false;
+
+  function paint(){
+    panes.forEach(function(pane){
+      pane.hidden = Number(pane.getAttribute("data-step")) !== step;
+    });
+    bar.style.width = Math.round(step / total * 100) + "%";
+    stepEl.textContent = (lang === "es" ? "Paso " : "Step ") + step +
+                         (lang === "es" ? " de " : " of ") + total;
+    backEl.hidden = step === 1;
+
+    chips.innerHTML = "";
+    Object.keys(answers).forEach(function(k){
+      var c = document.createElement("span");
+      c.className = "chip";
+      c.textContent = answers[k];
+      chips.appendChild(c);
+    });
+  }
+
+  function go(n){
+    step = Math.max(1, Math.min(total, n));
+    paint();
+    var first = panes[step - 1].querySelector(".opt, input");
+    if (first) setTimeout(function(){ first.focus({ preventScroll: true }); }, 60);
+  }
+
+  $$(".opt", root).forEach(function(opt){
+    opt.addEventListener("click", function(){
+      var q = opt.getAttribute("data-q");
+      $$('.opt[data-q="' + q + '"]', root).forEach(function(o){ o.classList.remove("sel"); });
+      opt.classList.add("sel");
+      answers[q] = opt.getAttribute("data-val");
+      if (!started){ started = true; track("form_start", { location: where }); }
+      if (where === "hero") engaged = true;
+      track("form_step", { location: where, step: step, question: q, answer: answers[q] });
+      setTimeout(function(){ go(step + 1); }, 220);
+    });
+  });
+
+  backEl.addEventListener("click", function(){ go(step - 1); });
+
+  $$("input", root).forEach(function(i){
+    i.addEventListener("focus", function(){ if (where === "hero") engaged = true; });
     i.addEventListener("input", function(){
       if (i.getAttribute("aria-invalid") === "true") mark(i, false);
       if (box) box.hidden = true;
     });
   });
 
-  form.addEventListener("submit", function(ev){
-    ev.preventDefault();
-    if (sending) return;
-    if (form.querySelector('[name="company"]').value !== "") return;   // honeypot
+  btn.addEventListener("click", function(){
+    if (sending || done) return;
+    if (root.querySelector('[name="company"]').value !== "") return;   // honeypot
     if (box) box.hidden = true;
 
-    var n = document.getElementById(prefix + "name");
+    var f = document.getElementById(prefix + "fname");
     var e = document.getElementById(prefix + "email");
-    var p = document.getElementById(prefix + "phone");
-    var ok = [[n, V.name(n.value)], [e, V.email(e.value)], [p, V.phone(p.value)]];
+    var ph = document.getElementById(prefix + "phone");
+    var cs = document.getElementById(prefix + "consent");
+    var csErr = document.getElementById(prefix + "consent-e");
+
+    var checks = [[f, V.name(f.value)], [e, V.email(e.value)], [ph, V.phone(ph.value)]];
     var bad = null;
-    ok.forEach(function(pair){ mark(pair[0], !pair[1]); if (!pair[1] && !bad) bad = pair[0]; });
+    checks.forEach(function(c){ mark(c[0], !c[1]); if (!c[1] && !bad) bad = c[0]; });
+    if (csErr) csErr.hidden = cs.checked;
+    if (!cs.checked && !bad) bad = cs;
     if (bad){ bad.focus(); track("lead_validation_error", { location: where }); return; }
 
+    var first = f.value.trim();
+    var last  = document.getElementById(prefix + "lname").value.trim();
     var payload = {
-      name: n.value.trim(), email: e.value.trim(), phone: p.value.trim(),
-      language: lang, source: ATTR.source,
+      name: (first + " " + last).trim(),
+      email: e.value.trim(),
+      phone: ph.value.trim(),
+      language: (answers.language === "Español") ? "es" : (answers.language === "English" ? "en" : lang),
+      source: ATTR.source,
       utm_source: ATTR.utm_source, utm_medium: ATTR.utm_medium, utm_campaign: ATTR.utm_campaign
+    };
+    var detail = {
+      goal: answers.goal || "", location: answers.location || "",
+      stage: answers.stage || "", preferredLanguage: answers.language || "",
+      altPhone: document.getElementById(prefix + "alt").value.trim()
     };
 
     sending = true;
@@ -726,12 +953,18 @@ function wireForm(formId, prefix, where){
       track("lead_submit_success", { location: where, source: payload.source });
       try {
         sessionStorage.setItem("pcr_lead", JSON.stringify({
-          ts: Date.now(), lang: lang,
-          lead: { firstName: payload.name.split(" ")[0], preferredLanguage: lang === "es" ? "Español" : "English" },
+          ts: Date.now(), lang: payload.language,
+          lead: {
+            firstName: first,
+            category: detail.goal,
+            location: detail.location,
+            volume: detail.stage,
+            preferredLanguage: detail.preferredLanguage
+          },
           payload: payload, ads: {}, fired: false
         }));
       } catch(err){}
-      location.assign(CONFIG.thankYou + "?lang=" + encodeURIComponent(lang));
+      location.assign(CONFIG.thankYou + "?lang=" + encodeURIComponent(payload.language));
     }).catch(function(err){
       sending = false;
       btn.disabled = false;
@@ -741,6 +974,9 @@ function wireForm(formId, prefix, where){
       console.error("Lead submission failed:", err.message, "| endpoint:", CONFIG.endpoint);
     });
   });
+
+  paint();
+  return { repaint: paint };
 }
 
 function post(payload){
@@ -767,13 +1003,16 @@ function post(payload){
 var ov = $("#ov"), lastFocus = null, fired = false;
 
 function openPop(trigger){
-  if (fired || done || ov.classList.contains("open")) return;
+  if (fired || done || engaged || ov.classList.contains("open")){
+    if (engaged) track("popup_suppressed", { reason: "already filling the form" });
+    return;
+  }
   fired = true;
   lastFocus = document.activeElement;
   ov.hidden = false;
   requestAnimationFrame(function(){ ov.classList.add("open"); });
   document.body.classList.add("locked");
-  setTimeout(function(){ var f = $("#popname"); if (f) f.focus({ preventScroll: true }); }, 240);
+  setTimeout(function(){ var f = $("#popwiz .opt, #popwiz input"); if (f) f.focus({ preventScroll: true }); }, 240);
   track("popup_open", { trigger: trigger });
 }
 function closePop(){
@@ -810,15 +1049,20 @@ $$(".q__b").forEach(function(b){
 /* ---------- boot ---------- */
 snapshot();
 $$(".lang button").forEach(function(b){
-  b.addEventListener("click", function(){ setLang(b.getAttribute("data-lang")); track("language_change", { language: b.getAttribute("data-lang") }); });
+  b.addEventListener("click", function(){
+    setLang(b.getAttribute("data-lang"));
+    if (heroWiz) heroWiz.repaint();
+    if (popWiz) popWiz.repaint();
+    track("language_change", { language: b.getAttribute("data-lang") });
+  });
 });
 var urlLang = (new URLSearchParams(location.search)).get("lang");
 var saved = null; try { saved = localStorage.getItem("pcr_lang"); } catch(e){}
 var navLang = (navigator.language || "en").toLowerCase().indexOf("es") === 0 ? "es" : "en";
 setLang(urlLang === "es" || urlLang === "en" ? urlLang : (saved || navLang));
 
-wireForm("heroForm", "", "hero");
-wireForm("popForm", "pop", "popup");
+var heroWiz = wizard("", "hero");
+var popWiz  = wizard("pop", "popup");
 
 $$("a[data-cta]").forEach(function(a){
   a.addEventListener("click", function(){ track("cta_click", { location: a.getAttribute("data-cta"), language: lang }); });
@@ -854,9 +1098,10 @@ import json
 out = PAGE
 for k, v in [
     ('__GTM_HEAD__', GTM_HEAD), ('__GTM_BODY__', GTM_BODY), ('__ICONS__', ICONS),
+    ('__PHOTO__', PHOTO),
     ('__TOKENS__', TOKENS), ('__LOGO__', LOGO),
-    ('__FORM_HERO__', form('', 'cta.hero', 'Get Free Guidance')),
-    ('__FORM_POP__',  form('pop', 'cta.pop', 'Get Free Guidance')),
+    ('__FORM_HERO__', wizard('')),
+    ('__FORM_POP__',  wizard('pop')),
     ('__FAQ__', faq_html),
     ('__EMAIL__', CFG['email']),
     ('__PHONE_US__', CFG['phoneUS']), ('__PHONE_CR__', CFG['phoneCR']),

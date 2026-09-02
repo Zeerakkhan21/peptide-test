@@ -93,6 +93,9 @@ const SPY = `
   is((await p.$$('.step')).length === 4, 'four-step how-it-works');
   is((await p.$$('.q')).length >= 4, 'FAQ present', '-> ' + (await p.$$('.q')).length + ' questions');
   is(!!(await p.$('.band')), 'dark closing CTA band present');
+  is(await p.$eval('.built__art img', e => e.naturalWidth > 0), 'the lifestyle photograph loads');
+  is(await p.$eval('.built__art img', e => e.getAttribute('src').startsWith('data:image/')),
+     'photograph is inlined, no external file');
   // the reference's columns must not collapse into unreadable slivers
   const giW = await p.$$eval('.gi', ns => ns.map(n => Math.round(n.getBoundingClientRect().width)));
   is(Math.min(...giW) >= 150, 'explainer columns are wide enough to read', '-> ' + giW.join(', ') + 'px');
@@ -117,40 +120,86 @@ const SPY = `
   const ev = await p.evaluate(() => window.__events);
   is(ev.some(e => e.event === 'popup_open'), 'popup open is tracked');
   // the honeypot is also an input; count only the fields a person sees
-  is((await p.$$('#ov input:not([aria-hidden="true"])')).length === 3,
-     'popup carries the same three-field form');
+  is((await p.$$('#popwiz .pane')).length === 5, 'popup carries the same five-step form');
   await p.click('#ovX'); await p.waitForTimeout(400);
   is(!(await p.$eval('#ov', e => e.classList.contains('open'))), 'closes on the X');
 
+  // ── walking the questions ────────────────────────────────────────────────
+  console.log('\n  the five-step form');
+  await p.goto(base + '/');
+  await p.waitForTimeout(800);
+  // engaging the hero form must suppress the popup, or a visitor gets a dialog
+  // dropped over the question they are halfway through
+  await p.click('.opt[data-val="GLP-1 and appetite"]');
+  await p.waitForTimeout(5200);
+  is(!(await p.$eval('#ov', e => e.classList.contains('open'))),
+     'popup stays shut once the hero form is in progress');
+  await p.reload();
+  await p.waitForTimeout(800);
+  is(await p.$eval('#step', e => /1 of 5/.test(e.textContent)), 'opens on step 1 of 5');
+  is(await p.$eval('#back', e => e.hidden), 'no Back button on the first step');
+
+  await p.click('.opt[data-val="GLP-1 and weight management"]');
+  await p.waitForTimeout(420);
+  is(await p.$eval('#step', e => /2 of 5/.test(e.textContent)), 'answering advances a step');
+  is((await p.$$eval('#chips .chip', ns => ns.map(n => n.textContent))).length === 1,
+     'the answer is shown back as a chip');
+  is(!(await p.$eval('#back', e => e.hidden)), 'Back appears from step 2');
+  const w2 = await p.$eval('#bar', e => e.style.width);
+  is(w2 === '40%', 'progress bar tracks the step', '-> ' + w2);
+
+  await p.click('#back'); await p.waitForTimeout(300);
+  is(await p.$eval('#step', e => /1 of 5/.test(e.textContent)), 'Back returns to the previous step');
+  is(await p.$eval('.opt[data-val="GLP-1 and weight management"]', e => e.classList.contains('sel')),
+     'and the earlier answer is still selected');
+
+  await p.click('.opt[data-val="GLP-1 and weight management"]'); await p.waitForTimeout(400);
+  await p.click('.opt[data-val="United States"]');               await p.waitForTimeout(400);
+  await p.click('.opt[data-val="Just starting to look into it"]'); await p.waitForTimeout(400);
+  await p.click('.opt[data-val="English"]');                     await p.waitForTimeout(450);
+  is(await p.$eval('#step', e => /5 of 5/.test(e.textContent)), 'four answers reach the contact step');
+  is((await p.$$('#chips .chip')).length === 4, 'all four answers are chipped');
+  for (const id of ['#fname', '#lname', '#email', '#phone', '#alt', '#consent']) {
+    is(!!(await p.$(id)), 'contact step has ' + id.slice(1));
+  }
+
   // ── validation ───────────────────────────────────────────────────────────
   console.log('\n  validation');
-  await p.click('#btn');
-  await p.waitForTimeout(300);
-  is(await p.$eval('#name', e => e.getAttribute('aria-invalid')) === 'true', 'empty name is rejected');
+  await p.click('#btn'); await p.waitForTimeout(300);
+  is(await p.$eval('#fname', e => e.getAttribute('aria-invalid')) === 'true', 'empty first name is rejected');
   is(posted.length === 0, 'nothing posted on an invalid submit');
-  await p.fill('#name', 'Zeerak');
+  await p.fill('#fname', 'Zeerak');
   await p.fill('#email', 'not-an-email');
   await p.fill('#phone', '123');
   await p.click('#btn'); await p.waitForTimeout(300);
   is(await p.$eval('#email', e => e.getAttribute('aria-invalid')) === 'true', 'bad email is rejected');
   is(await p.$eval('#phone', e => e.getAttribute('aria-invalid')) === 'true', 'short phone is rejected');
+  await p.fill('#email', 'zeerak.test@example.com');
+  await p.fill('#phone', '+1 831 471 5559');
+  await p.click('#btn'); await p.waitForTimeout(300);
+  is(!(await p.$eval('#consent-e', e => e.hidden)), 'unticked consent blocks the submit');
   is(posted.length === 0, 'still nothing posted');
 
   // ── the happy path ───────────────────────────────────────────────────────
   console.log('\n  lead capture');
-  await p.fill('#email', 'zeerak.test@example.com');
-  await p.fill('#phone', '+1 831 471 5559');
+  await p.fill('#lname', 'Khan');
+  await p.check('#consent');
   await p.click('#btn');
   await p.waitForURL(/thank-you/, { timeout: 8000 }).catch(() => {});
   await p.waitForTimeout(800);
   is(posted.length === 1, 'exactly one lead posted', '-> ' + posted.length);
   const lead = posted[0] || {};
-  is(lead.name === 'Zeerak' && !!lead.email && !!lead.phone, 'name, email and phone all reached the API');
+  is(lead.name === 'Zeerak Khan', 'first and last name are joined', '-> ' + lead.name);
+  is(!!lead.email && !!lead.phone, 'email and phone reached the API');
+  is(lead.language === 'en', 'the language answer sets the payload language', '-> ' + lead.language);
   is(lead.source === 'glp1_lp', 'tagged as the GLP-1 variant', '-> ' + lead.source);
   is('utm_source' in lead && 'utm_campaign' in lead, 'UTM fields included for attribution');
   is(/thank-you/.test(p.url()), 'redirects to the thank-you page', '-> ' + new URL(p.url()).pathname);
   const dl = await p.evaluate(() => (window.dataLayer || []).map(e => e && e.event).filter(Boolean));
   is(dl.filter(e => e === 'generate_lead').length === 1, 'conversion fires exactly once', '-> ' + dl.filter(e => e === 'generate_lead').length);
+  const recap = await p.$eval('body', b => b.innerText);
+  is(/Zeerak/.test(recap), 'thank-you page greets them by name');
+  is(/weight management/i.test(recap), 'and recaps what they asked about');
 
   // ── the popup form delivers too ──────────────────────────────────────────
   console.log('\n  popup form');
@@ -160,15 +209,23 @@ const SPY = `
   const p2 = await ctx2.newPage();
   await p2.goto(base + '/?utm_source=google&utm_campaign=glp1-test');
   await p2.waitForSelector('#ov.open', { timeout: 9000 });
-  await p2.fill('#popname', 'Ana Rodríguez');
+  await p2.click('#popwiz .opt[data-val="GLP-1 and appetite"]');   await p2.waitForTimeout(400);
+  await p2.click('#popwiz .opt[data-val="Costa Rica"]');           await p2.waitForTimeout(400);
+  await p2.click('#popwiz .opt[data-val="Not sure yet"]');         await p2.waitForTimeout(400);
+  await p2.click('#popwiz .opt[data-val="Espa\u00f1ol"]');            await p2.waitForTimeout(450);
+  await p2.fill('#popfname', 'Ana');
+  await p2.fill('#poplname', 'Rodríguez');
   await p2.fill('#popemail', 'ana@example.com');
   await p2.fill('#popphone', '+506 8404 6973');
+  await p2.check('#popconsent');
   await p2.click('#popbtn');
   await p2.waitForURL(/thank-you/, { timeout: 8000 }).catch(() => {});
   await p2.waitForTimeout(700);
   is(posted.length === 1, 'popup form posts a lead too', '-> ' + posted.length);
   is((posted[0] || {}).utm_campaign === 'glp1-test', 'campaign attribution carried through',
      '-> ' + (posted[0] || {}).utm_campaign);
+  is((posted[0] || {}).language === 'es', 'the Spanish answer sets the payload language',
+     '-> ' + (posted[0] || {}).language);
   await ctx2.close();
 
   // ── Spanish ──────────────────────────────────────────────────────────────
@@ -178,8 +235,10 @@ const SPY = `
   const esH1 = (await p.$eval('h1', e => e.textContent)).replace(/\s+/g, ' ').trim();
   is(/GLP-1/.test(esH1), 'still leads on GLP-1', '-> "' + esH1 + '"');
   is(/[áéíóúñ¿]/i.test(await p.$eval('.hero__sub', e => e.textContent)), 'body copy is translated');
-  is(await p.$eval('#name', e => e.placeholder) === 'Nombre completo', 'form placeholders translate',
-     '-> ' + await p.$eval('#name', e => e.placeholder));
+  is(await p.$eval('.pane__q', e => /[¿áéíóú]/i.test(e.textContent)), 'the first question is translated',
+     '-> ' + await p.$eval('.pane__q', e => e.textContent));
+  is(await p.$eval('#step', e => /Paso/.test(e.textContent)), 'the step counter is translated',
+     '-> ' + await p.$eval('#step', e => e.textContent));
 
   // ── layout ───────────────────────────────────────────────────────────────
   console.log('\n  layout');

@@ -91,10 +91,29 @@ the hero card, so a visitor can convert from either.
 
 ## The lead form
 
-Three fields — name, email and phone — in two places: the card beside the
-headline, and the popup. Both post the same payload, tagged with where the
-submission came from (`hero` or `popup`) so you can see which one earns its
-place.
+Five steps — four questions, then contact details — matching the flow on the
+main landing page. It appears twice, in the card beside the headline and in the
+popup, each keeping its own answers and tagged with where the submission came
+from (`hero` or `popup`) so you can see which one earns its place.
+
+The four questions qualify the lead without touching health status, which is not
+a targetable or storable attribute for advertising purposes:
+
+1. What would you like to understand better?
+2. Where are you based?
+3. Where are you in the process?
+4. Which language should we reply in?
+
+Answers appear back as chips as you go, Back returns to any earlier step with
+the selection intact, and the progress bar and step counter track position.
+The contact step asks first name, last name (optional), email, phone, a
+messaging number (optional) and a consent checkbox. First name, email, phone
+and consent are required.
+
+**The popup will not open while the hero form is in progress.** Engaging with
+the hero form — picking an option or focusing a field — suppresses it, so nobody
+gets a dialog dropped over a question they are halfway through. That suppression
+is recorded as `popup_suppressed`.
 
 On submit the page POSTs eight fields to `/api/lead`, which forwards
 server-side to the Lead API. The upstream host and any API key never reach the
@@ -115,6 +134,9 @@ Google Tag Manager container **GTM-M2GVDQ44**, the same one as the other pages.
 | --- | --- |
 | `page_view_lp` | page load, tagged with the variant |
 | `popup_open` | popup opens, tagged with what triggered it |
+| `popup_suppressed` | popup held back because the hero form was in use |
+| `form_start` | first answer given |
+| `form_step` | each question answered, with the answer |
 | `lead_validation_error` | submit blocked by a field error |
 | `lead_submit_attempt` | submit pressed |
 | `lead_submit_success` | Lead API accepted, redirecting |
@@ -146,13 +168,29 @@ node glp1-test.js
 
 53 assertions: the ad-safety scan described above, the structural pieces of the
 reference layout, that the brand kit is applied rather than the reference's own
-colours, the popup firing between 3.6 and 5 seconds, field validation, full
-submissions from both the hero form and the popup reaching the API with the
-right `source` and UTM fields, the redirect and the single conversion, Spanish
-rendering including form placeholders, six viewports from 320px to 1920px, tap
-target sizes and console cleanliness.
+colours, the popup firing between 3.6 and 5 seconds and staying shut once the hero form
+is in use, a full walk through all five steps including Back and the answer
+chips, field and consent validation, complete submissions from both the hero
+form and the popup reaching the API with the right name, language, `source` and
+UTM fields, the redirect and the single conversion, the personalised thank-you
+page, Spanish rendering down to the step counter, six viewports from 320px to
+1920px, tap target sizes and console cleanliness.
 
 ---
+
+---
+
+## The photograph
+
+The "Built around you" panel carries a lifestyle photograph, inlined as a data
+URI so the page stays self-contained.
+
+**Confirm you hold a licence for it before this goes live.** It came from the
+reference design supplied to me, and I have no way to check its provenance. If
+it is stock imagery belonging to someone else, replace it: put your own file in
+the repository, point the `PHOTO` line at the top of `build.py` at it, and
+re-run the build. The panel crops to 5:4 and covers, so any reasonably
+proportioned image works.
 
 ## Editing the page
 
