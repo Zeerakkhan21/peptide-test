@@ -68,6 +68,13 @@ const SPY = `
      'directs people to an independent healthcare professional');
   is(/does not provide medical advice/i.test(visible), 'states it is not medical advice');
 
+  // No phone numbers anywhere in the copy. The form still *collects* one —
+  // api/lead.js rejects a payload without it — but the page publishes none.
+  const numbers = visible.replace(/<script[\s\S]*?<\/script>/gi, '')
+                         .match(/\+\d[\d ()\-.]{7,}|\btel:/gi);
+  is(!numbers, 'no phone number published in the copy',
+     numbers ? '-> found "' + numbers[0].trim() + '"' : '');
+
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 950 } });
   await ctx.addInitScript(SPY);
   const p = await ctx.newPage();
@@ -159,9 +166,12 @@ const SPY = `
   await p.click('.opt[data-val="English"]');                     await p.waitForTimeout(450);
   is(await p.$eval('#step', e => /5 of 5/.test(e.textContent)), 'four answers reach the contact step');
   is((await p.$$('#chips .chip')).length === 4, 'all four answers are chipped');
-  for (const id of ['#fname', '#lname', '#email', '#phone', '#alt', '#consent']) {
+  for (const id of ['#fname', '#lname', '#email', '#phone', '#consent']) {
     is(!!(await p.$(id)), 'contact step has ' + id.slice(1));
   }
+  // The optional messaging-number field was removed on request. The required
+  // Phone Number stays, because api/lead.js 422s a payload without one.
+  is(!(await p.$('#alt')), 'the optional messaging-number field is gone');
 
   // ── validation ───────────────────────────────────────────────────────────
   console.log('\n  validation');
@@ -249,8 +259,46 @@ const SPY = `
     const over = await p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     is(over === 0, w + 'px — no horizontal overflow', over ? '-> ' + over + 'px' : '');
   }
+  // Every section must be reachable on a phone. The primary nav is hidden
+  // below 1000px, so a scrollable strip takes over — and it has to actually
+  // scroll, or the last links are unreachable.
   await p.setViewportSize({ width: 390, height: 844 });
-  await p.waitForTimeout(300);
+  await p.waitForTimeout(280);
+  const nav = await p.evaluate(() => {
+    const primary = document.querySelector('.nav');
+    const strip = document.querySelector('.navwrap');
+    const inner = strip && strip.querySelector('.navwrap__in');
+    return {
+      primaryHidden: primary ? getComputedStyle(primary).display === 'none' : true,
+      stripShown: !!strip && getComputedStyle(strip).display !== 'none',
+      links: inner ? inner.querySelectorAll('a').length : 0,
+      scrolls: inner ? inner.scrollWidth > inner.clientWidth + 1 : false,
+      cta: !!document.querySelector('.hdr [data-cta="header"]')
+    };
+  });
+  is(nav.primaryHidden && nav.stripShown, 'the mobile nav strip replaces the primary nav');
+  is(nav.links === 5, 'all five sections are in the strip', '-> ' + nav.links);
+  is(nav.scrolls, 'the strip scrolls horizontally rather than clipping');
+  is(nav.cta, 'the header CTA is present at 390px');
+
+  // A sticky header hides whatever an anchor jumps to unless the target
+  // reserves room for it.
+  const anchors = await p.evaluate(() => {
+    const h = Math.round(document.querySelector('.hdr').getBoundingClientRect().height);
+    return ['how', 'about', 'expect', 'faq', 'contact', 'lead'].map(id => {
+      const n = document.getElementById(id);
+      return { id, ok: n && parseFloat(getComputedStyle(n).scrollMarginTop) >= h };
+    });
+  });
+  is(anchors.every(a => a.ok), 'every anchor clears the sticky header',
+     '-> ' + anchors.filter(a => !a.ok).map(a => '#' + a.id).join(' '));
+
+  // Content must not sit against the screen edge.
+  const gutter = await p.$$eval('.hero h1, .hero .eyebrow-pill, .sec .h2',
+    ns => Math.min(...ns.map(n => Math.round(n.getBoundingClientRect().left))));
+  is(gutter >= 14, 'copy keeps a gutter from the screen edge at 390px', '-> ' + gutter + 'px');
+
+  await p.waitForTimeout(120);
   // honeypots are deliberately invisible and are not tap targets
   const small = await p.$$eval('a, button, input', els => els
     .filter(e => e.getClientRects().length && e.getAttribute('aria-hidden') !== 'true')

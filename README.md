@@ -31,7 +31,7 @@ reference.
 | Headline | A named compound | Explore GLP-1 Options |
 | Primary CTA | Request Information | Get Free Guidance |
 | Conversion goal | Enquiry about a product | Lead capture |
-| Form | Four questions, then details | Name, email, phone |
+| Form | Four questions, then details | Four questions, then details |
 | Prices, discounts, stock | Shown | None |
 | Compound names | Named | None |
 | Lead `source` | `adwords_lp` | `glp1_lp` |
@@ -84,8 +84,8 @@ The timing is in `CFG` at the top of `build.py`:
 "popupMs": 5000,
 ```
 
-Change it there and re-run the build. The popup carries the same three fields as
-the hero card, so a visitor can convert from either.
+Change it there and re-run the build. The popup carries the same five-step form
+as the hero card, so a visitor can convert from either.
 
 ---
 
@@ -106,9 +106,14 @@ a targetable or storable attribute for advertising purposes:
 
 Answers appear back as chips as you go, Back returns to any earlier step with
 the selection intact, and the progress bar and step counter track position.
-The contact step asks first name, last name (optional), email, phone, a
-messaging number (optional) and a consent checkbox. First name, email, phone
-and consent are required.
+The contact step asks first name, last name (optional), email, phone and a
+consent checkbox. First name, email, phone and consent are required.
+
+**The page publishes no phone numbers** — not in the footer, not in the contact
+section. The form still *collects* one, because `api/lead.js` validates the
+field and returns 422 without it, so removing it would reject every lead. A
+test asserts both halves of that: no published number, and the input still
+there.
 
 **The popup will not open while the hero form is in progress.** Engaging with
 the hero form — picking an option or focusing a field — suppresses it, so nobody
@@ -166,7 +171,7 @@ npm i -D playwright && npx playwright install chromium
 node glp1-test.js
 ```
 
-53 assertions: the ad-safety scan described above, the structural pieces of the
+87 assertions: the ad-safety scan described above, the structural pieces of the
 reference layout, that the brand kit is applied rather than the reference's own
 colours, the popup firing between 3.6 and 5 seconds and staying shut once the hero form
 is in use, a full walk through all five steps including Back and the answer
@@ -174,9 +179,32 @@ chips, field and consent validation, complete submissions from both the hero
 form and the popup reaching the API with the right name, language, `source` and
 UTM fields, the redirect and the single conversion, the personalised thank-you
 page, Spanish rendering down to the step counter, six viewports from 320px to
-1920px, tap target sizes and console cleanliness.
+1920px, the mobile behaviour described below, tap target sizes and console
+cleanliness.
 
 ---
+
+## On a phone
+
+The primary nav is hidden below 1000px, so a horizontally scrollable strip sits
+under the header carrying all five section links — without it, every section
+below the hero was unreachable except by scrolling. The header CTA stays visible
+at every width and drops to a shorter label under 420px, where the logo, the
+language toggle and a seventeen-character button cannot share one line.
+
+Anchor targets carry `scroll-margin-top: 92px`. The header is sticky and 75px
+tall, so without that reservation every in-page jump landed underneath it.
+
+Three containers used the `padding` shorthand, which was resetting the
+horizontal padding `.wrap` supplies and putting copy flush against the screen
+edge — invisible on desktop, where the 1180px max-width leaves a margin anyway.
+They use `padding-block` now. "GLP-1" is set `nowrap` in the headline; its
+hyphen is a legal wrap point and a 320px screen was breaking it as
+"Explore GLP-" / "1 Options."
+
+Four tests cover this: the nav strip appears and scrolls, every anchor clears
+the header, copy keeps its gutter at 390px, and no viewport from 320px to
+1920px scrolls horizontally.
 
 ---
 

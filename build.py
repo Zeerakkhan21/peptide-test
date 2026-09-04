@@ -31,8 +31,6 @@ CFG = {
     "thankYou": "/thank-you.html",
     "popupMs": 5000,
     "email": "info@peptidescostarica.net",
-    "phoneUS": "+1 (831) 471-5559",
-    "phoneCR": "+506 8404-6973",
 }
 
 
@@ -100,7 +98,6 @@ ES = {
  "f.email.e":"Escribe un correo válido.",
  "f.phone":"Teléfono",
  "f.phone.e":"Escribe un teléfono válido.",
- "f.alt":"Número de mensajería (opcional)",
  "f.consent":"Acepto que me contacten sobre esta solicitud y recibir información educativa ocasional por correo o teléfono. Puedo darme de baja cuando quiera.",
  "f.consent.e":"Marca la casilla para que podamos responderte.",
  "f.apierr":"No pudimos enviar tus datos. Tus respuestas siguen aquí — inténtalo de nuevo.",
@@ -108,7 +105,7 @@ ES = {
  "skip":"Saltar al formulario",
  "nav.how":"Cómo funciona","nav.about":"Sobre el GLP-1","nav.expect":"Qué esperar",
  "nav.faq":"Preguntas","nav.contact":"Contacto",
- "cta.header":"Recibir orientación","cta.hero":"Recibir orientación gratuita",
+ "cta.header":"Recibir orientación","cta.headerShort":"Empezar","cta.hero":"Recibir orientación gratuita",
  "cta.band":"Recibir orientación gratuita","cta.pop":"Recibir orientación gratuita",
  "hero.eyebrow":"Orientación sobre GLP-1 y control de peso",
  "hero.h1":"Explora las opciones de <em>GLP-1</em>.<br>Entiende tu camino de control de peso.",
@@ -256,10 +253,6 @@ def wizard(p):
         '\n                     data-i18n-ph="f.phone" aria-describedby="{p}phone-e">'
         '\n              <p class="fld__e" id="{p}phone-e" hidden data-i18n="f.phone.e">Please enter a valid phone number.</p>'
         '\n            </div>'
-        '\n            <div class="fld"><span class="fld__i">{chat}</span>'
-        '\n              <input id="{p}alt" type="tel" autocomplete="tel"'
-        '\n                     placeholder="Messaging number (optional)" data-i18n-ph="f.alt">'
-        '\n            </div>'
         '\n            <label class="consent">'
         '\n              <input type="checkbox" id="{p}consent">'
         '\n              <span data-i18n="f.consent">I agree to be contacted about this request and to receive'
@@ -307,6 +300,8 @@ __ICONS__
 :root{__TOKENS__}
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+/* every in-page target clears the sticky header instead of hiding beneath it */
+:target,#lead,#about,#expect,#how,#faq,#contact{scroll-margin-top:92px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;font-family:Poppins,system-ui,-apple-system,"Segoe UI",sans-serif;
   color:var(--ink);background:var(--surface);line-height:1.62;-webkit-font-smoothing:antialiased}
@@ -335,7 +330,7 @@ a{color:inherit}
 /* ── header ──────────────────────────────────────────── */
 .hdr{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);
   backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.hdr__in{display:flex;align-items:center;gap:20px;min-height:74px;padding:11px 0}
+.hdr__in{display:flex;align-items:center;gap:14px;min-height:74px;padding-block:11px}
 .brand{display:flex;align-items:center;flex:0 0 auto;text-decoration:none;min-height:40px}
 .brand__logo{height:42px;width:auto;display:block}
 .nav{display:none;margin:0 auto;gap:clamp(16px,2.1vw,30px)}
@@ -350,15 +345,39 @@ a{color:inherit}
   font-weight:600;padding:5px 11px;border-radius:999px;cursor:pointer;min-height:30px}
 .lang button[aria-pressed="true"]{background:#fff;color:var(--b900);box-shadow:var(--sh-s)}
 .lang button:focus-visible{outline:2px solid var(--b500);outline-offset:2px}
-.hdr .btn{display:none}
-@media (min-width:560px){.hdr .btn{display:inline-flex}}
+.hdr .btn{padding:11px 16px;font-size:.88rem;min-height:44px;white-space:nowrap}
+@media (min-width:560px){.hdr .btn{padding:12px 24px;font-size:.97rem;min-height:48px}}
+/* Under 420px the logo, the language toggle and a 17-character CTA cannot all
+   fit on one line, so the header tightens and the CTA takes a shorter label
+   rather than pushing the page into horizontal scroll. */
+.cta-sm{display:none}
+@media (max-width:419px){
+  .cta-lg{display:none}
+  .cta-sm{display:inline}
+  .hdr__in{gap:10px}
+  .brand__logo{height:36px}
+  .hdr__end{gap:8px}
+  .lang button{padding:5px 9px;font-size:.73rem}
+  .hdr .btn{padding:11px 13px;font-size:.85rem}
+}
+/* Below 1000px the nav becomes a scrollable strip under the header rather than
+   disappearing, so every section stays reachable on a phone. */
+.navwrap{display:block;border-bottom:1px solid var(--line);background:var(--surface)}
+@media (min-width:1000px){.navwrap{display:none}}
+.navwrap__in{display:flex;gap:22px;overflow-x:auto;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;padding-block:2px}
+.navwrap__in::-webkit-scrollbar{display:none}
+.navwrap a{flex:0 0 auto;font-size:.86rem;font-weight:500;color:var(--ink2);
+  text-decoration:none;padding:11px 1px;min-height:44px;display:inline-flex;align-items:center;
+  border-bottom:2px solid transparent}
+.navwrap a:hover,.navwrap a:focus-visible{color:var(--b700);border-bottom-color:var(--b500)}
 
 /* ── hero ────────────────────────────────────────────── */
 .hero{position:relative;overflow:hidden;
   background:radial-gradient(900px 520px at 88% -6%,var(--b50) 0%,transparent 64%),
              linear-gradient(180deg,#FAFCFE 0%,#F2F8FD 100%)}
 .hero__in{display:grid;gap:clamp(30px,4vw,54px);align-items:start;
-  padding:clamp(34px,5vw,66px) 0 clamp(40px,5.5vw,72px)}
+  padding-block:clamp(34px,5vw,66px) clamp(40px,5.5vw,72px)}
 @media (min-width:960px){.hero__in{grid-template-columns:1.16fr .84fr}}
 .hero__in>*{min-width:0}
 
@@ -367,11 +386,13 @@ a{color:inherit}
   letter-spacing:.11em;text-transform:uppercase;padding:6px 15px}
 h1{margin-top:20px;font-size:clamp(2.05rem,4.4vw,2.95rem);line-height:1.12;
   letter-spacing:-.028em;font-weight:700;text-wrap:balance}
-h1 em{font-style:normal;color:var(--b500)}
+/* "GLP-1" carries a real hyphen, which is a legal wrap point — on a 320px
+   screen the headline was breaking into "Explore GLP-" / "1 Options." */
+h1 em{font-style:normal;color:var(--b500);white-space:nowrap}
 .hero__sub{margin-top:20px;color:var(--ink2);font-size:1.02rem;max-width:52ch}
 
-.pills{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:20px 24px;margin-top:32px}
+.pills{display:grid;grid-template-columns:1fr;gap:18px;margin-top:30px}
+@media (min-width:560px){.pills{grid-template-columns:repeat(3,1fr);gap:20px 22px}}
 .pill__h{display:flex;align-items:center;gap:9px;font-weight:600;font-size:.98rem}
 .pill__c{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--b500);
   color:#fff;display:grid;place-items:center}
@@ -467,7 +488,7 @@ h1 em{font-style:normal;color:var(--b500)}
 .tr p{font-size:.84rem;color:var(--ink2);line-height:1.5}
 
 /* ── sections ────────────────────────────────────────── */
-.sec{padding:clamp(44px,5.4vw,70px) 0}
+.sec{padding-block:clamp(52px,5.4vw,70px)}
 .sec--tint{background:linear-gradient(180deg,var(--surface),var(--bg))}
 .sec--bg{background:var(--bg)}
 .kick{font-size:.72rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--b600)}
@@ -516,7 +537,7 @@ h1 em{font-style:normal;color:var(--b500)}
 .step__c{width:62px;height:62px;margin:0 auto 13px;border-radius:50%;background:var(--surface);
   border:1px solid var(--b100);display:grid;place-items:center;box-shadow:var(--sh-s)}
 .step__c svg{width:26px;height:26px;color:var(--b500)}
-.step h3{font-size:.87rem;font-weight:600;margin-bottom:5px}
+.step h3{font-size:.87rem;font-weight:600;margin-bottom:5px;text-wrap:balance}
 .step p{font-size:.79rem;color:var(--ink2);line-height:1.45}
 .steps__a{flex:0 0 auto;align-self:flex-start;margin-top:20px;color:var(--b200)}
 .steps__a svg{width:20px;height:20px;display:block}
@@ -537,6 +558,7 @@ h1 em{font-style:normal;color:var(--b500)}
 .q__b{width:100%;display:flex;align-items:center;justify-content:space-between;gap:18px;
   background:none;border:0;font:inherit;font-weight:600;font-size:.98rem;color:var(--ink);
   text-align:left;padding:19px 2px;cursor:pointer;min-height:56px}
+.q__b span{text-wrap:balance}
 .q__b:focus-visible{outline:2px solid var(--b500);outline-offset:-2px}
 .q__b svg{width:18px;height:18px;color:var(--b500);flex:0 0 auto;transition:transform .22s var(--ease)}
 .q__b[aria-expanded="true"] svg{transform:rotate(45deg)}
@@ -547,7 +569,7 @@ h1 em{font-style:normal;color:var(--b500)}
 /* dark band */
 .band{background:linear-gradient(120deg,var(--b900),#0A2A50 55%,#03101F);color:#fff}
 .band__in{display:flex;flex-wrap:wrap;gap:22px;align-items:center;justify-content:space-between;
-  padding:clamp(26px,3.4vw,40px) 0}
+  padding-block:clamp(26px,3.4vw,40px)}
 .band__t{font-size:clamp(1.24rem,2.7vw,1.72rem);line-height:1.24;font-weight:700;
   letter-spacing:-.015em;text-wrap:balance}
 .band__s{margin-top:7px;color:#B4CCE4;font-size:.94rem}
@@ -605,10 +627,20 @@ __GTM_BODY__
         <button type="button" data-lang="en" aria-pressed="true">EN</button>
         <button type="button" data-lang="es" aria-pressed="false">ES</button>
       </div>
-      <a class="btn btn--primary" href="#lead" data-cta="header" data-i18n="cta.header">Get Free Guidance</a>
+      <a class="btn btn--primary" href="#lead" data-cta="header"><span class="cta-lg" data-i18n="cta.header">Get Free Guidance</span><span class="cta-sm" data-i18n="cta.headerShort">Get Started</span></a>
     </div>
   </div>
 </header>
+
+<div class="navwrap">
+  <nav class="wrap navwrap__in" aria-label="Sections">
+    <a href="#how"     data-i18n="nav.how">How It Works</a>
+    <a href="#about"   data-i18n="nav.about">About GLP-1</a>
+    <a href="#expect"  data-i18n="nav.expect">What to Expect</a>
+    <a href="#faq"     data-i18n="nav.faq">FAQs</a>
+    <a href="#contact" data-i18n="nav.contact">Contact</a>
+  </nav>
+</div>
 
 <main id="top">
 
@@ -939,8 +971,7 @@ function wizard(prefix, where){
     };
     var detail = {
       goal: answers.goal || "", location: answers.location || "",
-      stage: answers.stage || "", preferredLanguage: answers.language || "",
-      altPhone: document.getElementById(prefix + "alt").value.trim()
+      stage: answers.stage || "", preferredLanguage: answers.language || ""
     };
 
     sending = true;
@@ -1104,7 +1135,6 @@ for k, v in [
     ('__FORM_POP__',  wizard('pop')),
     ('__FAQ__', faq_html),
     ('__EMAIL__', CFG['email']),
-    ('__PHONE_US__', CFG['phoneUS']), ('__PHONE_CR__', CFG['phoneCR']),
     ('__CONFIG__', json.dumps({k: CFG[k] for k in ('endpoint','source','thankYou','popupMs')})),
     ('__ES__', json.dumps(ES, ensure_ascii=False)),
 ]:
