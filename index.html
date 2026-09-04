@@ -804,8 +804,9 @@ function mark(input, bad){
    surprised by half-filled state. Whichever completes first wins; `done` then
    stops the other and stops the popup reopening. */
 var sending = false, done = false;
-// Set as soon as someone engages with the hero form. The popup checks it, so
-// nobody gets a dialog dropped on top of a question they are halfway through.
+// Set as soon as someone engages with the hero form. No longer gates the popup
+// — the popup is meant to fire on every landing — but it is still reported, so
+// you can see in GTM how often the dialog lands on a half-filled form.
 var engaged = false;
 
 function wizard(prefix, where){
@@ -962,14 +963,17 @@ function post(payload){
   });
 }
 
-/* ---------- popup ---------- */
+/* ---------- popup ----------
+   Opens CONFIG.popupMs after every landing — first visit, refresh, or a return
+   through the Back button. Nothing is stored between page loads, so there is no
+   "already seen this" state to reset; reloading the page always re-arms it.
+   The only thing that stops it is a lead already submitted in this page load,
+   which cannot happen in practice because a submission redirects away. */
 var ov = $("#ov"), lastFocus = null, fired = false;
 
 function openPop(trigger){
-  if (fired || done || engaged || ov.classList.contains("open")){
-    if (engaged) track("popup_suppressed", { reason: "already filling the form" });
-    return;
-  }
+  if (fired || done || ov.classList.contains("open")) return;
+  if (engaged) track("popup_over_form", { note: "opened while the hero form was in progress" });
   fired = true;
   lastFocus = document.activeElement;
   ov.hidden = false;
@@ -996,7 +1000,22 @@ document.addEventListener("keydown", function(e){
     else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
   }
 });
-setTimeout(function(){ openPop("time-" + CONFIG.popupMs + "ms"); }, CONFIG.popupMs);
+var popTimer = null;
+function armPop(trigger){
+  clearTimeout(popTimer);
+  popTimer = setTimeout(function(){ openPop(trigger); }, CONFIG.popupMs);
+}
+armPop("time-" + CONFIG.popupMs + "ms");
+
+/* A Back-button return can restore the page from the browser's cache without
+   re-running any of this, which would leave the visitor on the page with no
+   popup. `persisted` tells us that happened; re-arm the timer from scratch. */
+window.addEventListener("pageshow", function(e){
+  if (!e.persisted) return;
+  fired = false;
+  engaged = false;
+  armPop("time-" + CONFIG.popupMs + "ms-restored");
+});
 
 /* ---------- faq ---------- */
 $$(".q__b").forEach(function(b){

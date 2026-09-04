@@ -131,18 +131,46 @@ const SPY = `
   await p.click('#ovX'); await p.waitForTimeout(400);
   is(!(await p.$eval('#ov', e => e.classList.contains('open'))), 'closes on the X');
 
+  // It must come back on every landing, including a refresh after a dismissal.
+  // Nothing is stored between page loads, so there is no "seen it" flag to go
+  // stale — but that is exactly the kind of thing a later edit reintroduces.
+  for (const landing of ['refresh after dismissing it', 'a second refresh']) {
+    await p.reload();
+    await p.waitForSelector('#ov.open', { timeout: 6500 }).catch(() => {});
+    is(await p.$eval('#ov', e => e.classList.contains('open')),
+       'popup returns on ' + landing);
+    await p.click('#ovX'); await p.waitForTimeout(350);
+  }
+  // and it fires even if the visitor has started the hero form
+  await p.reload(); await p.waitForTimeout(500);
+  await p.click('.opt[data-val="GLP-1 and appetite"]');
+  await p.waitForSelector('#ov.open', { timeout: 6500 }).catch(() => {});
+  is(await p.$eval('#ov', e => e.classList.contains('open')),
+     'popup fires even with the hero form in progress');
+  await p.click('#ovX'); await p.waitForTimeout(350);
+
   // ── walking the questions ────────────────────────────────────────────────
+  // The hero walk takes longer than five seconds, so the popup now lands on top
+  // of it partway through — which is the requested behaviour, not a fault. Auto
+  // dismiss it so the walk can carry on testing the hero form underneath.
+  const autoClosePopup = () => p.evaluate(() => {
+    if (window.__popCloser) return;
+    window.__popCloser = new MutationObserver(() => {
+      const ov = document.getElementById('ov');
+      if (ov && ov.classList.contains('open')) document.getElementById('ovX').click();
+    });
+    window.__popCloser.observe(document.getElementById('ov'), { attributes: true });
+  });
+  const stopAutoClose = () => p.evaluate(() => {
+    if (window.__popCloser) { window.__popCloser.disconnect(); window.__popCloser = null; }
+  });
+
   console.log('\n  the five-step form');
   await p.goto(base + '/');
   await p.waitForTimeout(800);
-  // engaging the hero form must suppress the popup, or a visitor gets a dialog
-  // dropped over the question they are halfway through
-  await p.click('.opt[data-val="GLP-1 and appetite"]');
-  await p.waitForTimeout(5200);
-  is(!(await p.$eval('#ov', e => e.classList.contains('open'))),
-     'popup stays shut once the hero form is in progress');
   await p.reload();
   await p.waitForTimeout(800);
+  await autoClosePopup();
   is(await p.$eval('#step', e => /1 of 5/.test(e.textContent)), 'opens on step 1 of 5');
   is(await p.$eval('#back', e => e.hidden), 'no Back button on the first step');
 
@@ -242,6 +270,7 @@ const SPY = `
   console.log('\n  Spanish');
   await p.goto(base + '/?lang=es');
   await p.waitForTimeout(800);
+  await autoClosePopup();
   const esH1 = (await p.$eval('h1', e => e.textContent)).replace(/\s+/g, ' ').trim();
   is(/GLP-1/.test(esH1), 'still leads on GLP-1', '-> "' + esH1 + '"');
   is(/[áéíóúñ¿]/i.test(await p.$eval('.hero__sub', e => e.textContent)), 'body copy is translated');
@@ -253,6 +282,7 @@ const SPY = `
   // ── layout ───────────────────────────────────────────────────────────────
   console.log('\n  layout');
   await p.goto(base + '/');
+  await autoClosePopup();
   for (const w of [320, 390, 768, 1024, 1440, 1920]) {
     await p.setViewportSize({ width: w, height: 900 });
     await p.waitForTimeout(240);

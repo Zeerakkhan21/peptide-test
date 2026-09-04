@@ -74,9 +74,18 @@ first leads arrive.
 
 ## The popup
 
-Opens **five seconds** after landing. It opens once per visit and never after a
-submission. Escape, the X and a click on the backdrop all close it, and focus is
-trapped inside it while it is open.
+Opens **five seconds** after every landing — first visit, refresh, or a return
+through the Back button. Dismissing it does not stop it coming back on the next
+page load: nothing is stored between loads, so there is no "already seen this"
+flag to go stale. Escape, the X and a click on the backdrop all close it, and
+focus is trapped inside it while it is open.
+
+It fires even when the visitor has already started the hero form. That is
+deliberate and was asked for, but it does mean a dialog can land on top of a
+half-answered question. The occurrence is tracked as `popup_over_form`, so you
+can see in GTM how often it actually happens before deciding whether to hold it
+back. To hold it back, add `|| engaged` to the guard at the top of `openPop` in
+`build.py`.
 
 The timing is in `CFG` at the top of `build.py`:
 
@@ -115,11 +124,6 @@ field and returns 422 without it, so removing it would reject every lead. A
 test asserts both halves of that: no published number, and the input still
 there.
 
-**The popup will not open while the hero form is in progress.** Engaging with
-the hero form — picking an option or focusing a field — suppresses it, so nobody
-gets a dialog dropped over a question they are halfway through. That suppression
-is recorded as `popup_suppressed`.
-
 On submit the page POSTs eight fields to `/api/lead`, which forwards
 server-side to the Lead API. The upstream host and any API key never reach the
 browser. `source` is `glp1_lp`, so these leads are distinguishable from the
@@ -139,7 +143,7 @@ Google Tag Manager container **GTM-M2GVDQ44**, the same one as the other pages.
 | --- | --- |
 | `page_view_lp` | page load, tagged with the variant |
 | `popup_open` | popup opens, tagged with what triggered it |
-| `popup_suppressed` | popup held back because the hero form was in use |
+| `popup_over_form` | popup opened while the hero form was in progress |
 | `form_start` | first answer given |
 | `form_step` | each question answered, with the answer |
 | `lead_validation_error` | submit blocked by a field error |
@@ -171,10 +175,10 @@ npm i -D playwright && npx playwright install chromium
 node glp1-test.js
 ```
 
-87 assertions: the ad-safety scan described above, the structural pieces of the
+89 assertions: the ad-safety scan described above, the structural pieces of the
 reference layout, that the brand kit is applied rather than the reference's own
-colours, the popup firing between 3.6 and 5 seconds and staying shut once the hero form
-is in use, a full walk through all five steps including Back and the answer
+colours, the popup firing between 3.6 and 5 seconds and returning on
+every refresh, a full walk through all five steps including Back and the answer
 chips, field and consent validation, complete submissions from both the hero
 form and the popup reaching the API with the right name, language, `source` and
 UTM fields, the redirect and the single conversion, the personalised thank-you
